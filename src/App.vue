@@ -1,16 +1,27 @@
 <template>
     <div class="app">
-        <p>{{ jobs[0].location }}</p>
+        <header>
+            <div class="order">
+                <button @click="handleClick('title')">Order by Title</button>
+                <button @click="handleClick('salary')">Order by Salary</button>
+                <button @click="handleClick('location')">
+                    Order by Location
+                </button>
+            </div>
+        </header>
+        <JobList :jobs="jobs" :order="order" />
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from "vue";
+import JobList from "./components/JobsList.vue";
 import Job from "./types/Job";
+import OrderTerm from "./types/OrderTerm";
 
 export default defineComponent({
     name: "App",
-    components: {},
+    components: { JobList },
     setup() {
         const jobs = ref<Job[]>([
             {
@@ -45,11 +56,32 @@ export default defineComponent({
             },
         ]);
 
-        return { jobs };
+        const order = ref<OrderTerm>("title");
+        const handleClick = (term: OrderTerm) => {
+            order.value = term;
+        };
+
+        return { jobs, handleClick, order };
     },
 });
 </script>
 
 
 <style>
+header {
+    text-align: center;
+}
+header .order {
+    margin-top: 20px;
+}
+button {
+    margin: 0 10px;
+    color: #1195c9;
+    border: 3px solid #1195c9;
+    background: #d5f0ff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
 </style>
